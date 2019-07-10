@@ -14,7 +14,7 @@ module.exports = (function(){
                     res.json(result)
                 }
             })
-        },
+        }
     //     admin:function(req,res){
     //         const email = req.body.email;
     //         console.log(req.body)

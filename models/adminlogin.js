@@ -1,4 +1,3 @@
-
 const mongoose = require('mongoose')
 const bcryptjs = require('bcryptjs')
 const bcrypt = require('bcrypt')
@@ -7,19 +6,12 @@ const adminSchema = new mongoose.Schema({
     password:{type:String,require:true}
 })
 
-adminSchema.pre('save', async  function(next){
-    const admin = this
-    console.log(admin)
-  const  hashedpassword= await bcryptjs.hash(admin.password,8)
 
-  admin.password = hashedpassword;
-        next()  
-})
 
 adminSchema.statics.findByCredentials = async (email,password)=>{
-    const admin1 = await admin.findOne({email})
-    // console.log(admin1)
-    // console.log(email)
+    const admin1 = await adminlogin.findOne({email})
+    console.log(admin1)
+    console.log(email)
     if(!admin1){
         throw new error('Unable to login')
     }
@@ -31,12 +23,19 @@ adminSchema.statics.findByCredentials = async (email,password)=>{
     if(!isMatch){
         throw new error('unable to login')
     }
-    // console.log(admin1)
+    console.log(admin1)
     return admin1
    
  
 }
+adminSchema.pre('save', async  function(next){
+    const admin = this
+    console.log(admin)
+  const  hashedpassword= await bcryptjs.hash(admin.password,8)
 
+  admin.password = hashedpassword;
+        next()  
+})
 
 
 const admin = mongoose.model('admin',adminSchema)
