@@ -11,7 +11,7 @@ const addactorSchema = new mongoose.Schema({
     slots:{type:Array},
     address:{type:String},
     latitude:{type:Number},
-    langitude:{type:Number},
+    longitude:{type:Number},
     email:{type:String},
     phone:{type:Number},
     gender:{type:String}

@@ -57,6 +57,24 @@ module.exports = (function(){
                 }
             })
       },
+      searchAdmin:function(req,res){
+          actor.find({$or:[{"name":req.body.name},{"email":req.body.email},{"phone":req.body.phone}]},function(err,result){
+              if(err){
+                  res.send(err)
+              }else{
+                  res.json(result)
+              }
+          })
+      },
+      someofActors:function(req,res){
+          actor.findOne({"providerId":req.params.id}).countDocuments(function(err,result){
+            if(err){
+                res.send(err)
+            }else{
+                res.json(result)
+            }
+        })
+      }
 
     }
 })();

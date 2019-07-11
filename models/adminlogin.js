@@ -9,7 +9,7 @@ const adminSchema = new mongoose.Schema({
 
 
 adminSchema.statics.findByCredentials = async (email,password)=>{
-    const admin1 = await adminlogin.findOne({email})
+    const admin1 = await admin.findOne({email})
     console.log(admin1)
     console.log(email)
     if(!admin1){
@@ -22,6 +22,7 @@ adminSchema.statics.findByCredentials = async (email,password)=>{
     console.log(isMatch)
     if(!isMatch){
         throw new error('unable to login')
+        
     }
     console.log(admin1)
     return admin1

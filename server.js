@@ -11,12 +11,7 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 const providerctrl = require('./controllers/providerctrl.js')
 const getProviders = require('./controllers/providerctrl.js')
-const getAdminlogin = require('./controllers/adminloginctrl')
 const getAdminloginsave = require('./controllers/adminloginctrl')
-const saveactor = require('./controllers/actorctrl')
-const getactor = require('./controllers/actorctrl')
-const deleteactor = require('./controllers/actorctrl')
-const updateActor = require('./controllers/actorctrl')
 
 app.post('/providers',function(req,res){
     providerctrl.newprovider(req,res)
@@ -27,19 +22,7 @@ app.post('/providers',function(req,res){
  })
  app.post('/adminloginsave',function(req,res){
     getAdminloginsave.adminloginsave(req,res)
-})
-app.post('/addactor',function(req,res){
-    saveactor.addactors(req,res)
-})
-app.delete('/deleteActor/:id',function(req,res){
-    deleteactor.deleteActor(req,res)
-})
-app.get('/getActor/:providerId',function(req,res){
-    getactor.getActor(req,res)
-})
-app.put('/updateactor/:id',function(req,res){
-    updateActor.actorUpdate(req,res)
-})
+});
 // var datetimestamp;
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
@@ -67,23 +50,16 @@ app.get('/download/:photo', function(req, res){
     var file = __dirname + '/uploads/'+req.params.photo;
     res.download(file); // Set disposition and send it.
   });
-//  app.post('/adminlogin',function(req,res){
-//      getAdminlogin.findByCredentials(req,res)
-//  })
+
 app.post('/adminlogin',async (req,res)=>{
-    console.log(req.body.email)
-    console.log(req.body.password)
     try{
        const admin1 = await admin.findByCredentials(req.body.email,req.body.password)
-     console.log(admin1)
-    //    const token = await user.generateAuthToken()
-    //    res.send({ user:user.getPublicprofile(),token})
        res.send(admin1)
-      
     }catch(error){
         res.send(error)
     }
  })
+require('./routes/actorroutes')(app);
  
 var port = process.env.PORT || 3000;
 var server = app.listen(port, function () {
