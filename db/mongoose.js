@@ -14,3 +14,5 @@ mongoose.connection.once('open',function(){
 require('../models/providers.js')
 require('../models/adminlogin')
 require('../models/addactor')
+require('../models/qualification')
+require('../models/slotmaster')

@@ -12,7 +12,10 @@ app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 const providerctrl = require('./controllers/providerctrl.js')
 const getProviders = require('./controllers/providerctrl.js')
 const getAdminloginsave = require('./controllers/adminloginctrl')
-
+const getaddqualification = require('./controllers/qualificationctrl')
+const qualificationlist = require('./controllers/qualificationctrl')
+const slot = require('./controllers/slotmasterctrl')
+// const getslot = require('./controllers/slotmasterctrl')
 app.post('/providers',function(req,res){
     providerctrl.newprovider(req,res)
  })
@@ -23,6 +26,18 @@ app.post('/providers',function(req,res){
  app.post('/adminloginsave',function(req,res){
     getAdminloginsave.adminloginsave(req,res)
 });
+app.post('/addqualification',function(req,res){
+    getaddqualification.addQualification(req,res)
+})
+app.get('/getQualification/:id',function(req,res){
+    qualificationlist.getQualification(req,res)
+})
+app.post('/slotmaster',function(req,res){
+    slot.slotMaster(req,res)
+});
+app.get('/getSlotmaster',function(req,res){
+    slot.slotGet(req,res)
+})
 // var datetimestamp;
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {

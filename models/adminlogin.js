@@ -6,8 +6,6 @@ const adminSchema = new mongoose.Schema({
     password:{type:String,require:true}
 })
 
-
-
 adminSchema.statics.findByCredentials = async (email,password)=>{
     const admin1 = await admin.findOne({email})
     console.log(admin1)
@@ -21,13 +19,13 @@ adminSchema.statics.findByCredentials = async (email,password)=>{
     const isMatch = await bcrypt.compare(admin1.password,hashedpassword)
     console.log(isMatch)
     if(!isMatch){
-        throw new error('unable to login')
-        
+          
+        throw new error('invalid email') 
     }
-    console.log(admin1)
     return admin1
    
- 
+    console.log(admin1)
+  
 }
 adminSchema.pre('save', async  function(next){
     const admin = this
@@ -37,7 +35,5 @@ adminSchema.pre('save', async  function(next){
   admin.password = hashedpassword;
         next()  
 })
-
-
 const admin = mongoose.model('admin',adminSchema)
 module.exports = admin
