@@ -12,6 +12,9 @@ app.delete('/deleteActor/:id',function(req,res){
 app.get('/getActor/:providerId',function(req,res){
     actorctrl.getActor(req,res)
 });
+app.get('/getActorActive/:providerId',function(req,res){
+    actorctrl.getActorActive(req,res)
+});
 app.put('/updateactor/:id',function(req,res){
     actorctrl.actorUpdate(req,res)
 });

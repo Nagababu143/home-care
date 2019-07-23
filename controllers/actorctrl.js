@@ -36,6 +36,17 @@ module.exports = (function(){
                 }
             })
         },
+        getActorActive:function(req,res){
+            actor.find({$and:[{"status":"active"},{"providerId":req.params.providerId}]}, function(error,result){
+                if(error){
+                    res.send(error);
+                    console.log(error);
+                }
+                else{
+                    res.json(result);
+                }
+            })
+        },
         actorUpdate:function(req,res){
             actor.findById({"_id":req.params.id},function(error,result){
                 if(error){
@@ -67,7 +78,7 @@ module.exports = (function(){
           })
       },
       someofActors:function(req,res){
-          actor.findOne({"providerId":req.params.id}).countDocuments(function(err,result){
+          actor.find({"providerId":req.params.id}).countDocuments(function(err,result){
             if(err){
                 res.send(err)
             }else{

@@ -13,6 +13,15 @@ return{
         })
     },
     slotGet:function(req,res){
+        slot.find({"status":"active"},function(err,result){
+           if(err){
+               res.send(err)
+           }else{
+               res.send(result)
+           }
+        })
+    },
+    slotgetAll:function(req,res){
         slot.find({},function(err,result){
            if(err){
                res.send(err)
@@ -20,6 +29,28 @@ return{
                res.send(result)
            }
         })
-    }
+    },
+    slotmasterUpdate:function(req,res){
+        slot.findById({"_id":req.params.id},function(error,result){
+            if(error){
+                res.send(error)
+                console.log(result)
+            }
+            else{
+                for(prop in req.body){                          
+                    result[prop] = req.body[prop]                    
+              }
+                result.save(function(error,data){
+                    if(error){
+                        res.send(error)
+                        console.log(error)
+                    }
+                    else{   
+                        res.json(result)
+                    }
+                })
+            }
+        })
+  }
 }
 })();
