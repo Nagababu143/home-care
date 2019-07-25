@@ -20,6 +20,8 @@ const getaddqualification = require('./controllers/qualificationctrl');
 const qualificationlist = require('./controllers/qualificationctrl');
 const slot = require('./controllers/slotmasterctrl');
 const patient = require('./controllers/patientctrl')
+const sendwelcomemails = require('./emails/account')
+const appointment = require('./controllers/appointmentctrl')
 
 app.post('/providers',function(req,res){
     providerctrl.newprovider(req,res)
@@ -59,7 +61,7 @@ app.get('/getSlotmaster',function(req,res){
 });
 app.get('/getAllslotmaster',function(req,res){
     slot.slotgetAll(req,res)
-})
+});
 app.put('/updateSlot/:id',function(req,res){
     slot.slotmasterUpdate(req,res)
 });
@@ -69,6 +71,22 @@ app.get('/getpatient/:id',function(req,res){
 app.put('/updatepatientpassword/:id',function(req,res){
     patient.changepassword(req,res)
 });
+app.get('/forgotpassword/:email', function(request,response){
+    patient.forgotPassword(request,response)
+});
+app.post('/saveAppointment',function(req,res){
+    appointment.saveappointment(req,res)
+})
+app.get('/getDoctorappointment/:id',function(res,res){
+    appointment.getDoctor(req,res)
+})
+app.get('/getPatientappointment/:id',function(req,res){
+    appointment.getPatient(req,res)
+})
+app.get('/getappointment',function(res,res){
+    appointment.getAppointment(res,res)
+})
+
 app.post('/savePatient',function(req,res,next){
     bcryptjs.hash(req.body.password,8)
     .then(hash=>{
@@ -80,9 +98,10 @@ app.post('/savePatient',function(req,res,next){
             age:req.body.age,
             phone:req.body.phone,
             address:req.body.address,
-            
+            confirmpassword:req.body.confirmpassword
 });
         patient.save()
+        // sendwelcomemails(patient.email,patient.name)
         .then(result=>{
             res.status(201).json(result)
         })
@@ -96,6 +115,7 @@ app.post('/patientlogin',async (req,res)=>{
         throw new error('Unable to login')
     }
     const isMatch = await bcryptjs.compareSync(req.body.password,patient.password)
+   
     console.log(isMatch)
     if(!isMatch){
         throw new error('unable to login')

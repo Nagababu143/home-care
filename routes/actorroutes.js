@@ -21,4 +21,10 @@ app.put('/updateactor/:id',function(req,res){
 app.post('/adminSearch',function(req,res){
     actorctrl.searchAdmin(req,res)
 });
+app.post('/personDetails/:providerId',function(req,res){
+    actorctrl.getPersondetals(req,res)
+});
+app.post('/searchActor/:providerId',function(req,res){
+    actorctrl.search(req,res)
+});
 }

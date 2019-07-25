@@ -14,6 +14,17 @@ module.exports = (function(){
                 }
             })
         },
+        getPersondetals:function(req,res){
+            actor.find({"providerId":req.params.providerId}, function(error,result){
+                if(error){
+                    res.send(error);
+                    console.log(error);
+                }
+                else{
+                    res.json(result);
+                }
+            })
+        },
         deleteActor:function(req,res){
             actor.deleteOne({"_id":req.params.id}, function(error,result){
                 if(error){
@@ -26,7 +37,7 @@ module.exports = (function(){
             })
         },
         getActor:function(req,res){
-            actor.find({"providerId":req.params.providerId}, function(error,result){
+            actor.find({$and:[{"_id":req.body.id},{"providerId":req.params.providerId}], function(error,result){
                 if(error){
                     res.send(error);
                     console.log(error);
@@ -34,6 +45,7 @@ module.exports = (function(){
                 else{
                     res.json(result);
                 }
+            }
             })
         },
         getActorActive:function(req,res){
@@ -77,6 +89,22 @@ module.exports = (function(){
               }
           })
       },
+      search:function(req,res){
+          console.log(req.params.providerId)
+        const actorresult = actor.find({"providerId":req.params.providerId},function(err,result){
+            if(err){
+                res.send(err)
+            }else{
+                actorresult.find({$or:[{"name":req.body.name},{"slots":[{availableDays:"monday"}]},{"gender":req.body.gender},{"speciality":req.body.speciality}]},function(err,result){
+                    if(err){
+                        res.send(err)
+                    }else{
+                        res.json(result)
+                    }
+                })
+            }
+        })
+    },
       someofActors:function(req,res){
           actor.find({"providerId":req.params.id}).countDocuments(function(err,result){
             if(err){
